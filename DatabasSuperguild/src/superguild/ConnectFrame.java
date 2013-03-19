@@ -54,7 +54,7 @@ public class ConnectFrame extends JDialog{
 		
 		JLabel lblH = new JLabel("Host");
 		GridBagConstraints gbc_lblH = new GridBagConstraints();
-		gbc_lblH.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblH.anchor = GridBagConstraints.EAST;
 		gbc_lblH.insets = new Insets(0, 0, 5, 5);
 		gbc_lblH.gridx = 0;
 		gbc_lblH.gridy = 1;

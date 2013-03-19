@@ -1,5 +1,9 @@
 package superguild;
 
-public class OptionsFrame {
+import javax.swing.JFrame;
+
+public class OptionsFrame extends JFrame{
+
+	private static final long serialVersionUID = 1L;
 
 }
