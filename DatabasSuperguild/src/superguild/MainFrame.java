@@ -76,9 +76,9 @@ public class MainFrame extends JFrame {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		
 		JButton btnNewButton = new JButton("Das Super-Knapfe");
@@ -88,8 +88,16 @@ public class MainFrame extends JFrame {
 		gbc_btnNewButton.gridy = 0;
 		getContentPane().add(btnNewButton, gbc_btnNewButton);
 		
+		JButton btnNewButton2 = new JButton("Das Super-Knapfe2");
+		GridBagConstraints gbc_btnNewButton2 = new GridBagConstraints();
+		gbc_btnNewButton2.insets = new Insets(0, 0, 0, 0);
+		gbc_btnNewButton2.gridx = 0;
+		gbc_btnNewButton2.gridy = 1;
+		getContentPane().add(btnNewButton2, gbc_btnNewButton2);
+		
 		table = new JTable();
 		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.gridheight = 3;
 		gbc_table.fill = GridBagConstraints.BOTH;
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 0;
