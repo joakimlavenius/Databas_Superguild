@@ -93,15 +93,13 @@ public class ConnectFrame extends JDialog{
 		gbc_btnSignIn.gridy = 4;
 		
 		btnSignIn.addActionListener(new ActionListener() {
-			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainFrame.getSQLHandler().useCredentials(textField_1.getText(), textField.getText(), passwordField.getText(), "superguild");
 				MainFrame.getSQLHandler().debug(true);
 				MainFrame.getSQLHandler().connect();
 				//Connection done. I hope.
 				
-				setVisible(false);
+				windowShutter();
 			}
 		});
 		
@@ -116,4 +114,7 @@ public class ConnectFrame extends JDialog{
 
 	}
 
+	private void windowShutter(){
+		this.setVisible(false);
+	}
 }

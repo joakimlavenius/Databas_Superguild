@@ -54,7 +54,7 @@ public class SQLHandler {
 	public void connect() {
 		try {
 			sqlConnection = dataSource.getConnection();
-			if(debugMode) System.out.println();
+			if(debugMode) System.out.println("DebugMode is on.");
 		} catch (SQLException e) {
 			System.err.println("SQLHandler: Can't connect to database, using "+username+"@"+host);
 			e.printStackTrace();

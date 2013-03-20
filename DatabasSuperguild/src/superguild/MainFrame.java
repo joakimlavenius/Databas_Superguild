@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import java.awt.GridBagConstraints;
@@ -97,7 +101,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet debugresults = debugQuery();
+				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member", new String[]{ });
 				//Populates table, send resultset
 				try {
 					lister(debugresults);
@@ -123,16 +127,24 @@ public class MainFrame extends JFrame {
 
 			}
 		});
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setSize(new Dimension(300, 200));
+		scrollPane.setMinimumSize(new Dimension(300, 200));
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 3;
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 0;
+		getContentPane().add(scrollPane, gbc_scrollPane);
 
 		table = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.gridheight = 3;
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 1;
-		gbc_table.gridy = 0;
-		getContentPane().add(table, gbc_table);
+		
+		scrollPane.setViewportView(table);
 
-
+		
 
 		setVisible(true);
 	}
@@ -144,6 +156,7 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	public static SQLHandler sqlHandler = new SQLHandler();
+	
 	//This populates the JTable
 	public void lister (ResultSet result) throws SQLException{
 		//DefaultTableModel
@@ -176,29 +189,7 @@ public class MainFrame extends JFrame {
 		//				    used to: return model;
 	}
 
-	//DEBUG QUERYER
-	public ResultSet debugQuery(){
-		
-		//Gör statement som skickar queerberries
-		Statement queryCaller = null;
-		try {
-			queryCaller = ConnectFrame.con.createStatement(ResultSet.CONCUR_UPDATABLE,ResultSet.TYPE_SCROLL_SENSITIVE);
-		} catch (SQLException e1) {
-			System.out.println("Statement creation fail");
-			e1.printStackTrace();
-		}
-		//Måste skapa ResultSet objekt
-		ResultSet results = null;
-		
-			try {
-				results = queryCaller.executeQuery("SELECT * FROM Member");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		return results;
-	}
+	
 
 }
 
