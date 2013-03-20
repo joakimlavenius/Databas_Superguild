@@ -107,8 +107,12 @@ public class MainFrame extends JFrame {
 		
 		setVisible(true);
 	}
+	
+	public static SQLHandler getSQLHandler() {
+		return sqlHandler;
+	}
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-
+	public static SQLHandler sqlHandler = new SQLHandler();
 }

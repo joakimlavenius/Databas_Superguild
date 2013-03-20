@@ -96,24 +96,12 @@ public class ConnectFrame extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ds = new MysqlDataSource();
+				MainFrame.getSQLHandler().useCredentials(textField_1.getText(), textField.getText(), passwordField.getText(), "superguild");
+				MainFrame.getSQLHandler().debug(true);
+				MainFrame.getSQLHandler().connect();
+				//Connection done. I hope.
 				
-				ds.setServerName(textField_1.getText());
-				ds.setPort(3306);
-
-				ds.setUser(textField.getText());
-				ds.setPassword(passwordField.getText());
-				ds.setDatabaseName("superguild");
 				setVisible(false);
-				
-				try {
-					con = ds.getConnection();
-				} catch (SQLException e1) {
-					System.err.println("Connection failed " + e1.getMessage());
-					return;
-				}
-				
-				System.out.println("Connection sucessful");
 			}
 		});
 		
