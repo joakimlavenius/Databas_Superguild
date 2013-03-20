@@ -12,6 +12,7 @@ public class SQLHandler {
 	private MysqlDataSource dataSource;
 	private Connection sqlConnection = null;
 	private boolean debugMode;
+	private boolean connected = false;
 	
 	private String host,username,database;
 	
@@ -51,10 +52,15 @@ public class SQLHandler {
 		debugMode = t;
 	}
 	
+	public boolean isConnected() {
+		return connected;
+	}
+	
 	public void connect() {
 		try {
 			sqlConnection = dataSource.getConnection();
-			if(debugMode) System.out.println();
+			if(debugMode) System.out.println("SQLHandler connected.");
+			connected = true;
 		} catch (SQLException e) {
 			System.err.println("SQLHandler: Can't connect to database, using "+username+"@"+host);
 			e.printStackTrace();
