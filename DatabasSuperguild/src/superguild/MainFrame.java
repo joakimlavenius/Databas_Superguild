@@ -9,10 +9,14 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
 public class MainFrame extends JFrame {
 	public MainFrame(){
@@ -24,22 +28,22 @@ public class MainFrame extends JFrame {
 		setTitle("Superguild");
 		setName("MainJFrame");
 		setMinimumSize(new Dimension(500, 400));
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnMain = new JMenu("Main");
 		menuBar.add(mnMain);
-		
+
 		JMenuItem mntmConnect = new JMenuItem("Connect");
 		mnMain.add(mntmConnect);
 		mntmConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConnectFrame connect = new ConnectFrame();
-				//connect.setVisible(true);
+				connect.setVisible(true);
 			}
 		});
-		
+
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnMain.add(mntmExit);
 		mntmExit.addActionListener(new ActionListener() {
@@ -47,11 +51,11 @@ public class MainFrame extends JFrame {
 				System.exit(0);
 			}
 		});
-		
+
 		JMenu mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
-		
-		
+
+
 		JMenuItem mntmPreferences = new JMenuItem("Preferences");
 		mnOptions.add(mntmPreferences);
 		mntmPreferences.addActionListener(new ActionListener() {
@@ -60,7 +64,7 @@ public class MainFrame extends JFrame {
 				optionsWindow.setVisible(true);
 			}
 		});
-		
+
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnOptions.add(mntmAbout);
 		mntmAbout.addActionListener(new ActionListener() {
@@ -69,32 +73,56 @@ public class MainFrame extends JFrame {
 				optionsWindow.setVisible(true);
 			}
 		});
-		
-		
-		
-		
-		
+
+
+
+
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
-		
-		JButton btnNewButton = new JButton("Das Super-Knapfe");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 0);
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 0;
-		getContentPane().add(btnNewButton, gbc_btnNewButton);
-		
-		JButton btnNewButton2 = new JButton("Das Super-Knapfe2");
-		GridBagConstraints gbc_btnNewButton2 = new GridBagConstraints();
-		gbc_btnNewButton2.insets = new Insets(0, 0, 0, 0);
-		gbc_btnNewButton2.gridx = 0;
-		gbc_btnNewButton2.gridy = 1;
-		getContentPane().add(btnNewButton2, gbc_btnNewButton2);
-		
+
+		JButton listMembersButton = new JButton("List All Members");
+		GridBagConstraints gbc_listMembersButton = new GridBagConstraints();
+		gbc_listMembersButton.fill = GridBagConstraints.BOTH;
+		gbc_listMembersButton.insets = new Insets(0, 0, 0, 0);
+		gbc_listMembersButton.gridx = 0;
+		gbc_listMembersButton.gridy = 0;
+		getContentPane().add(listMembersButton, gbc_listMembersButton);
+		listMembersButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				//Add doing a query here
+
+				//Populates table, send resultset
+				try {
+					lister(null);
+				} catch (SQLException e1) {
+					System.out.println("Error populating table!" + e1.getMessage());
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
+		JButton selectAMemberButton = new JButton("Select A Member");
+		GridBagConstraints gbc_selectAMemberButton = new GridBagConstraints();
+		gbc_selectAMemberButton.fill = GridBagConstraints.BOTH;
+		gbc_selectAMemberButton.insets = new Insets(0, 0, 0, 0);
+		gbc_selectAMemberButton.gridx = 0;
+		gbc_selectAMemberButton.gridy = 1;
+		getContentPane().add(selectAMemberButton, gbc_selectAMemberButton);
+		selectAMemberButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				//Gör query
+
+			}
+		});
+
 		table = new JTable();
 		GridBagConstraints gbc_table = new GridBagConstraints();
 		gbc_table.gridheight = 3;
@@ -102,13 +130,48 @@ public class MainFrame extends JFrame {
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 0;
 		getContentPane().add(table, gbc_table);
-		
-		
-		
+
+
+
 		setVisible(true);
 	}
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 
+	//This populates the JTable
+	public void lister (ResultSet result) throws SQLException{
+		//DefaultTableModel
+
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+		ResultSetMetaData meta = result.getMetaData();
+		if (model==null){
+			model= new DefaultTableModel();
+		}
+		String columns[] = new String[meta.getColumnCount()];
+
+		for(int i=0;i<columns.length;++i)
+		{
+			columns[i]= meta.getColumnLabel(i+1);
+		}
+
+		model.setColumnIdentifiers(columns);
+
+		while(result.next())
+		{
+			Object data[]= new Object[columns.length];
+			for(int i=0;i<data.length;++i)
+			{
+				data[i]=result.getObject(i+1);
+			}
+			model.addRow(data);
+		}
+		table.setModel(model);
+		//				    used to: return model;
+	}
+
+
 }
+
+
