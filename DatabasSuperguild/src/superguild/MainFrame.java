@@ -45,7 +45,6 @@ public class MainFrame extends JFrame {
 		mntmConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConnectFrame connect = new ConnectFrame();
-				connect.setVisible(true);
 			}
 		});
 

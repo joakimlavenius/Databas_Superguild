@@ -99,7 +99,12 @@ public class ConnectFrame extends JDialog{
 				MainFrame.getSQLHandler().connect();
 				//Connection done. I hope.
 				
-				windowShutter();
+				if(MainFrame.getSQLHandler().isConnected()){
+					windowShutter();
+				}
+				else{
+					System.out.println("Noes!");
+				}
 			}
 		});
 		
