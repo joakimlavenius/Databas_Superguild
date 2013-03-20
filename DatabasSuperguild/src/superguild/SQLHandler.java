@@ -101,6 +101,36 @@ public class SQLHandler {
 		return rs;
 	}
 	
+	public int updateQuery(String query, String data[]) {
+		int rs = 0;
+		try {
+			PreparedStatement prep = sqlConnection.prepareStatement(query);
+			int varCount = 0;
+			for(int i=0; i<query.length(); i++) {
+				if(query.charAt(i)=='?') varCount++;
+			}
+			
+			for(int i=0; i<varCount; i++) {
+				int possibleInt;
+				try {
+					//Is it an int?
+					possibleInt = Integer.parseInt(data[i]);
+					prep.setInt(i, possibleInt);
+				} catch(NumberFormatException e) {
+					//It wasn't an int. Treat it as string
+					prep.setString(i, data[i]);
+				}
+			}
+			rs = prep.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.err.println("SQLHandler: ERROR preparing statement for insert/update.");
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
 	
 	
 
