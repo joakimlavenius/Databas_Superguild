@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MainFrame extends JFrame {
 	public MainFrame(){
@@ -96,10 +97,10 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-
+				ResultSet debugresults = debugQuery();
 				//Populates table, send resultset
 				try {
-					lister(null);
+					lister(debugresults);
 				} catch (SQLException e1) {
 					System.out.println("Error populating table!" + e1.getMessage());
 					e1.printStackTrace();
@@ -143,7 +144,7 @@ public class MainFrame extends JFrame {
 	public void lister (ResultSet result) throws SQLException{
 		//DefaultTableModel
 
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		DefaultTableModel model = null;
 
 		ResultSetMetaData meta = result.getMetaData();
 		if (model==null){
@@ -171,6 +172,29 @@ public class MainFrame extends JFrame {
 		//				    used to: return model;
 	}
 
+	//DEBUG QUERYER
+	public ResultSet debugQuery(){
+		
+		//Gör statement som skickar queerberries
+		Statement queryCaller = null;
+		try {
+			queryCaller = ConnectFrame.con.createStatement(ResultSet.CONCUR_UPDATABLE,ResultSet.TYPE_SCROLL_SENSITIVE);
+		} catch (SQLException e1) {
+			System.out.println("Statement creation fail");
+			e1.printStackTrace();
+		}
+		//Måste skapa ResultSet objekt
+		ResultSet results = null;
+		
+			try {
+				results = queryCaller.executeQuery("SELECT * FROM Member");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return results;
+	}
 
 }
 

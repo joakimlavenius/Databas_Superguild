@@ -21,8 +21,8 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public class ConnectFrame extends JDialog{
 	private JPasswordField passwordField;
 	private JTextField textField;
-	public MysqlDataSource ds = null;
-	private Connection con = null;
+	public static MysqlDataSource ds = null;
+	public static Connection con = null;
 	private JTextField textField_1;
 	public ConnectFrame() {
 		
