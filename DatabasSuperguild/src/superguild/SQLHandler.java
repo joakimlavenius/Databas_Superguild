@@ -86,15 +86,15 @@ public class SQLHandler {
 				if(query.charAt(i)=='?') varCount++;
 			}
 			
-			for(int i=0; i<varCount; i++) {
+			for(int i=1; i<varCount+1; i++) {
 				int possibleInt;
 				try {
 					//Is it an int?
-					possibleInt = Integer.parseInt(data[i]);
+					possibleInt = Integer.parseInt(data[(i-1)]);
 					prep.setInt(i, possibleInt);
 				} catch(NumberFormatException e) {
 					//It wasn't an int. Treat it as string
-					prep.setString(i, data[i]);
+					prep.setString(i, data[(i-1)]);
 				}
 			}
 			rs = prep.executeQuery();
@@ -123,22 +123,25 @@ public class SQLHandler {
 		int rs = 0;
 		try {
 			PreparedStatement prep = sqlConnection.prepareStatement(query);
+			
 			int varCount = 0;
 			for(int i=0; i<query.length(); i++) {
 				if(query.charAt(i)=='?') varCount++;
 			}
 			
-			for(int i=0; i<varCount; i++) {
+			for(int i=1; i<varCount+1; i++) {
 				int possibleInt;
 				try {
 					//Is it an int?
-					possibleInt = Integer.parseInt(data[i]);
+					possibleInt = Integer.parseInt(data[(i-1)]);
 					prep.setInt(i, possibleInt);
 				} catch(NumberFormatException e) {
 					//It wasn't an int. Treat it as string
-					prep.setString(i, data[i]);
+					prep.setString(i, data[(i-1)]);
 				}
 			}
+			
+			
 			rs = prep.executeUpdate();
 			
 		} catch (SQLException e) {
