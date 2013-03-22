@@ -100,7 +100,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member", new String[]{ });
+				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member");
 				//Populates table, send resultset
 				try {
 					lister(debugresults);
