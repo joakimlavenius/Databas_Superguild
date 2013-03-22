@@ -82,9 +82,9 @@ public class MainFrame extends JFrame {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
 		JButton listMembersButton = new JButton("List All Members");
@@ -131,7 +131,7 @@ public class MainFrame extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 4;
+		gbc_scrollPane.gridheight = 5;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 0;
@@ -156,6 +156,14 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
+		
+		JButton addCharacterButton = new JButton("Add Character");
+		GridBagConstraints gbc_addCharacter = new GridBagConstraints();
+		gbc_addCharacter.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addCharacter.insets = new Insets(0, 0, 5, 5);
+		gbc_addCharacter.gridx = 0;
+		gbc_addCharacter.gridy = 3;
+		getContentPane().add(addCharacterButton, gbc_addCharacter);
 
 		
 
