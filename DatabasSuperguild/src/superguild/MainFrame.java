@@ -158,14 +158,14 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		JButton addCharacterButton = new JButton("Add Character");
-		GridBagConstraints gbc_addCharacter = new GridBagConstraints();
-		gbc_addCharacter.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addCharacter.insets = new Insets(0, 0, 5, 5);
-		gbc_addCharacter.gridx = 0;
-		gbc_addCharacter.gridy = 3;
-		getContentPane().add(addCharacterButton, gbc_addCharacter);
-		addCharacterButton.addActionListener(new ActionListener() {
+		JButton addProfessionButton = new JButton("Add Profession");
+		GridBagConstraints gbc_addProfession = new GridBagConstraints();
+		gbc_addProfession.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addProfession.insets = new Insets(0, 0, 5, 5);
+		gbc_addProfession.gridx = 0;
+		gbc_addProfession.gridy = 3;
+		getContentPane().add(addProfessionButton, gbc_addProfession);
+		addProfessionButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

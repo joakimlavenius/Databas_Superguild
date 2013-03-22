@@ -22,9 +22,9 @@ import javax.swing.JButton;
 public class AddProfessionFrame extends JDialog{
 	private JTextField level, notes;
 	private ArrayList<String> chars = null;
-	private JComboBox existingCharacters, comboBox_1;
-	private String[] characters;
+	private JComboBox<String> existingCharacters, profession;
 	
+	@SuppressWarnings("unchecked")
 	public AddProfessionFrame() {
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
@@ -51,7 +51,6 @@ public class AddProfessionFrame extends JDialog{
 			ResultSet resSet = MainFrame.getSQLHandler().selectQuery("SELECT Name FROM characters");
 			ResultSetMetaData resSetMeta = resSet.getMetaData();
 			int noc = resSetMeta.getColumnCount();
-			System.out.println(noc);
 			resSet.first();
 			while(resSet.next()){
 				chars.add(resSet.getString(noc));
@@ -80,13 +79,13 @@ public class AddProfessionFrame extends JDialog{
 		
 		final String[] professions = {"Blacksmithing", "Enchanting", "Tailoring", "Inscription", "Letherworking", "Jewelcrafting", "Mining",
 				"Skinning", "Herbalism", "Alchemy"};
-		comboBox_1 = new JComboBox(professions);
+		profession = new JComboBox(professions);
 		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
 		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox_1.gridx = 1;
 		gbc_comboBox_1.gridy = 1;
-		panel.add(comboBox_1, gbc_comboBox_1);
+		panel.add(profession, gbc_comboBox_1);
 		
 		JLabel lblLevel = new JLabel("Level");
 		GridBagConstraints gbc_lblLevel = new GridBagConstraints();
@@ -96,7 +95,7 @@ public class AddProfessionFrame extends JDialog{
 		gbc_lblLevel.gridy = 2;
 		panel.add(lblLevel, gbc_lblLevel);
 		
-		level = new JTextField();
+		level = new JTextField("1");
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
@@ -134,8 +133,9 @@ public class AddProfessionFrame extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(chars.get(existingCharacters.getSelectedIndex()));
 				MainFrame.getSQLHandler().updateQuery("INSERT INTO professions VALUES(?, ?, ?, ?)",
-						new String[] {chars.get(existingCharacters.getSelectedIndex()), professions[comboBox_1.getSelectedIndex()],
+						new String[] {chars.get(existingCharacters.getSelectedIndex()), professions[profession.getSelectedIndex()],
 						level.getText(), notes.getText()});
 				setVisible(false);
 			}
