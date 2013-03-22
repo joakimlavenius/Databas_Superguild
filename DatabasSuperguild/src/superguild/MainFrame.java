@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -164,6 +165,13 @@ public class MainFrame extends JFrame {
 		gbc_addCharacter.gridx = 0;
 		gbc_addCharacter.gridy = 3;
 		getContentPane().add(addCharacterButton, gbc_addCharacter);
+		addCharacterButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "FU");
+			}
+		});
 
 		
 
