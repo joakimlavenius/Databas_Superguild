@@ -15,13 +15,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame {
-	private AddMember addMember = new AddMember();
+	private AddMemberFrame addMember = new AddMemberFrame();
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
 		getContentPane().setMinimumSize(new Dimension(100, 0));
@@ -164,6 +165,16 @@ public class MainFrame extends JFrame {
 		gbc_addCharacter.gridx = 0;
 		gbc_addCharacter.gridy = 3;
 		getContentPane().add(addCharacterButton, gbc_addCharacter);
+		addCharacterButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				JOptionPane.showMessageDialog(null, "FU");
+				AddProfessionFrame proff = new AddProfessionFrame();
+				proff.setVisible(true);
+				proff.pack();
+			}
+		});
 
 		
 
