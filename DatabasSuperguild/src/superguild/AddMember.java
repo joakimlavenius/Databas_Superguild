@@ -285,7 +285,6 @@ public class AddMember{
 		createCharButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String mainAltOrBank = "";
-//				while(!rdbtnMain.isSelected() && !rdbtnAlt.isSelected() && !rdbtnBank.isSelected()){
 				if(rdbtnMain.isSelected()){
 					mainAltOrBank = "Main";
 				}else if(rdbtnAlt.isSelected()){
@@ -293,11 +292,6 @@ public class AddMember{
 				}else if(rdbtnBank.isSelected()){
 					mainAltOrBank = "Bank";
 				}
-//				}
-//				else{
-//					JOptionPane.showMessageDialog(null, "choose");
-//					mainAltOrBank = "NONE";
-//				}
 				MainFrame.getSQLHandler().updateQuery("INSERT INTO characters  VALUES('" + name.getText() + "','" + level.getText() + "','" + mainAltOrBank  + 
 						"','" +  race.getItemAt(race.getSelectedIndex()) + "','" + memID + "','" + classes.getItemAt(classes.getSelectedIndex()) + "')", new String[]{});
 				createCharacter.setVisible(false);

@@ -106,6 +106,19 @@ public class SQLHandler {
 		return rs;
 	}
 	
+	public ResultSet selectQuery(String query) {
+		ResultSet rs = null;
+		try {
+			PreparedStatement prep = sqlConnection.prepareStatement(query);
+			rs = prep.executeQuery();
+			
+		} catch (SQLException e) {
+			System.err.println("SQLHandler: ERROR preparing statement for simple select.");
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
 	public int updateQuery(String query, String data[]) {
 		int rs = 0;
 		try {

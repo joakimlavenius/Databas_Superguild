@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+<<<<<<< HEAD
+=======
+	<classpathentry kind="lib" path="C:/MySql/Connector J 5.1.23/mysql-connector-java-5.1.23-bin.jar"/>
+>>>>>>> 227f69a08fb05bb41eab6ce1a0bb4e5e8105707f
 	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 5.1.23/mysql-connector-java-5.1.23-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
