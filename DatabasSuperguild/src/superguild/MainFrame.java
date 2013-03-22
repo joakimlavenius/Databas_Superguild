@@ -1,27 +1,24 @@
 package superguild;
 
-import javax.swing.JFrame;
 import java.awt.Dimension;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.GridBagLayout;
-import javax.swing.JTable;
 import java.awt.GridBagConstraints;
-import javax.swing.JButton;
-import javax.swing.table.DefaultTableModel;
-
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame {
 	private AddMember addMember = new AddMember();
@@ -101,7 +98,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member", new String[]{ });
+				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member");
 				//Populates table, send resultset
 				try {
 					lister(debugresults);
