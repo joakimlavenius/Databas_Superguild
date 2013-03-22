@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class SQLHandler {
@@ -61,6 +63,7 @@ public class SQLHandler {
 			if(debugMode) System.out.println("SQLHandler connected.");
 			connected = true;
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Can't connect to the database. Wrong credentials.", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: Can't connect to database, using "+username+"@"+host);
 			e.printStackTrace();
 			return;
@@ -71,6 +74,7 @@ public class SQLHandler {
 		try {
 			return sqlConnection.getMetaData().toString();
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong... See console for output", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: ERROR getting info from DB. Are you connected?");
 			e.printStackTrace();
 			return "";
@@ -100,6 +104,7 @@ public class SQLHandler {
 			rs = prep.executeQuery();
 			
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong... See console for output", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: ERROR preparing statement for select.");
 			e.printStackTrace();
 		}
@@ -113,8 +118,11 @@ public class SQLHandler {
 			rs = prep.executeQuery();
 			
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong... See console for output", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: ERROR preparing statement for simple select.");
 			e.printStackTrace();
+		} catch(NullPointerException e2) {
+			JOptionPane.showMessageDialog(null, "I don't think you're connected yet", "Oops!", JOptionPane.ERROR_MESSAGE);
 		}
 		return rs;
 	}
@@ -145,6 +153,7 @@ public class SQLHandler {
 			rs = prep.executeUpdate();
 			
 		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong... Were you trying to add another character with the same name?", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: ERROR preparing statement for insert/update.");
 			e.printStackTrace();
 		}
