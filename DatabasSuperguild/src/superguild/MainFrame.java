@@ -78,19 +78,21 @@ public class MainFrame extends JFrame {
 						sortNames = new String[meta.getColumnCount()];
 						System.out.println("We have " + sortNames.length + " names");
 						
-						//Namnge kolumner
+						//Namnge
 						for(int i=0;i<sortNames.length;++i)
 						{
 							sortNames[i]= meta.getColumnLabel(i+1);
 							System.out.println(sortNames[i]);
 						}
-						//Sätt namnen till modellen
+						//Sätt namnen till menuitems
 						for (int i=0;i<sortNames.length;i++){
-							      sortItems[i] = new JMenuItem(sortNames[i]);  							      
+							sortItems[i] = new JMenuItem(sortNames[i]);  							      
 						}
+						//Lägger till dessa
 						for (int i=0;i<sortNames.length;i++){
 							mnSort.add(sortItems[i]);
 						}
+						//Skapar actionlisteners med ett gemensamt kommando
 						for (int i=0;i<sortNames.length;i++){
 							sortItems[i].setActionCommand(sortNames[i].toString());
 							sortItems[i].addActionListener(new ActionListener(){
