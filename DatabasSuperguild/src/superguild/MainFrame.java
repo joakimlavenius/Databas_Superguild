@@ -15,12 +15,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame {
 	
@@ -29,6 +30,7 @@ public class MainFrame extends JFrame {
 	JMenu mnSort;
 	JMenuItem[] sortItems = new JMenuItem[20];
 	
+	private AddMemberFrame addMember = new AddMemberFrame();
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
 		getContentPane().setMinimumSize(new Dimension(100, 0));
@@ -254,6 +256,23 @@ public class MainFrame extends JFrame {
 					System.out.println("Error populating table!" + e1.getMessage());
 					e1.printStackTrace();
 				}
+			}
+		});
+		JButton addProfessionButton = new JButton("Add Profession");
+		GridBagConstraints gbc_addProfession = new GridBagConstraints();
+		gbc_addProfession.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addProfession.insets = new Insets(0, 0, 5, 5);
+		gbc_addProfession.gridx = 0;
+		gbc_addProfession.gridy = 3;
+		getContentPane().add(addProfessionButton, gbc_addProfession);
+		addProfessionButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				JOptionPane.showMessageDialog(null, "FU");
+				AddProfessionFrame proff = new AddProfessionFrame();
+				proff.setVisible(true);
+				proff.pack();
 			}
 		});
 
