@@ -21,7 +21,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame {
-	private AddMember addMember = new AddMember();
+	
+	
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
 		getContentPane().setMinimumSize(new Dimension(100, 0));
@@ -82,9 +83,9 @@ public class MainFrame extends JFrame {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0 ,0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
 		JButton listMembersButton = new JButton("List All Members");
@@ -125,20 +126,34 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		JButton addCharToExist = new JButton("Add A Character");
+		GridBagConstraints gbc_addchar = new GridBagConstraints();
+		gbc_addchar.fill = GridBagConstraints.BOTH;
+		gbc_addchar.insets = new Insets(0, 0, 5, 5);
+		gbc_addchar.gridx = 0;
+		gbc_addchar.gridy = 3;
+		getContentPane().add(addCharToExist, gbc_addchar);
+		addCharToExist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				SelectCharacterFrame eee = new SelectCharacterFrame();
+				eee.setVisible(true);
+			}
+		});
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
 		scrollPane.setMinimumSize(new Dimension(300, 200));
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 5;
+		gbc_scrollPane.gridheight = 7;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 0;
 		getContentPane().add(scrollPane, gbc_scrollPane);
 
 		table = new JTable();
-		
 		scrollPane.setViewportView(table);
 		
 		JButton addNewMemberButton = new JButton("Add New Member");
@@ -152,18 +167,33 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				AddMember addMember = new AddMember();
 				addMember.addMember();
-				
 			}
 		});
 		
-		JButton addCharacterButton = new JButton("Add Character");
-		GridBagConstraints gbc_addCharacter = new GridBagConstraints();
-		gbc_addCharacter.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addCharacter.insets = new Insets(0, 0, 5, 5);
-		gbc_addCharacter.gridx = 0;
-		gbc_addCharacter.gridy = 3;
-		getContentPane().add(addCharacterButton, gbc_addCharacter);
+		JButton showAllChars = new JButton("List All Characters");
+		GridBagConstraints gbc_showAllChars = new GridBagConstraints();
+		gbc_showAllChars.insets = new Insets(0, 0, 5, 5);
+		gbc_showAllChars.gridx = 0;
+		gbc_showAllChars.gridy = 4;
+		getContentPane().add(showAllChars, gbc_showAllChars);
+		showAllChars.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				//Add doing a query here
+				ResultSet charresults = sqlHandler.selectQuery("SELECT * FROM characters");
+				//Populates table, send resultset
+				try {
+					lister(charresults);
+				} catch (SQLException e1) {
+					System.out.println("Error populating table!" + e1.getMessage());
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		
 
@@ -180,23 +210,25 @@ public class MainFrame extends JFrame {
 	
 	//This populates the JTable
 	public void lister (ResultSet result) throws SQLException{
-		//DefaultTableModel
+		
+		//DefaultTableModel = tom modell av en tabell som vi lägger in data i för att sedan applicera på riktiga tabellen
+		DefaultTableModel model = new DefaultTableModel();
 
-		DefaultTableModel model = null;
-
+		//Metadata är metadata: Titlar och skit
 		ResultSetMetaData meta = result.getMetaData();
-		if (model==null){
-			model= new DefaultTableModel();
-		}
+		
+		//Ta namnen på kolumner till en array
 		String columns[] = new String[meta.getColumnCount()];
 
+		//Namnge kolumner
 		for(int i=0;i<columns.length;++i)
 		{
 			columns[i]= meta.getColumnLabel(i+1);
 		}
-
+		//Sätt namnen till modellen
 		model.setColumnIdentifiers(columns);
 
+		//Dataobjekt som hämtar data från alla rader utom första, en rad i taget hämtar den all data, tills slut på rader
 		while(result.next())
 		{
 			Object data[]= new Object[columns.length];
@@ -206,6 +238,7 @@ public class MainFrame extends JFrame {
 			}
 			model.addRow(data);
 		}
+		//Applicerar modellen
 		table.setModel(model);
 		//				    used to: return model;
 	}

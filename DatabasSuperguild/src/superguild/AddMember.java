@@ -13,18 +13,18 @@ import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
 
 
 public class AddMember{
-	private JTextField name, level, notes;
+	private JTextField name, level, rankNumber, notes;
 	private JDialog addMember, createCharacter;
 	private int memID = 0;
 	private JCheckBox guildtaxPaid, isOfficer;
@@ -36,7 +36,7 @@ public class AddMember{
 		addMember = new JDialog();
 		addMember.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		try {
-			ResultSet res = MainFrame.getSQLHandler().selectQuery("SELECT memberId FROM member");
+			ResultSet res = MainFrame.getSQLHandler().selectQuery("SELECT memberId FROM member", new String[]{});
 			ResultSetMetaData resInf = res.getMetaData();
 			res.last();
 			int noc = resInf.getColumnCount();
@@ -54,7 +54,7 @@ public class AddMember{
 		gbl_panel.columnWidths = new int[]{0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 
 
@@ -75,7 +75,7 @@ public class AddMember{
 		gbc_lblRank.gridy = 1;
 		panel.add(lblRank, gbc_lblRank);
 		
-		final String[] ranks = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+		String[] ranks = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
 		rank = new JComboBox<String>(ranks);
 		GridBagConstraints gbc_rank = new GridBagConstraints();
 		gbc_rank.insets = new Insets(0, 0, 5, 5);
@@ -140,13 +140,13 @@ public class AddMember{
 						"Add Character?", JOptionPane.YES_NO_OPTION);
 				switch (check){
 				case JOptionPane.YES_OPTION:
-					MainFrame.getSQLHandler().updateQuery("INSERT INTO member VALUES(?, ?, ?, ?, ?)",
-						new String[] {""+memID, notes.getText(), ""+officer, ranks[rank.getSelectedIndex()], ""+guildTax});
+					MainFrame.getSQLHandler().updateQuery("INSERT INTO member VALUES('" + memID + "','" + notes.getText() + "','" +  officer + "','" +  
+							rank.getItemAt(rank.getSelectedIndex()) + "','" + guildTax + "')", new String[]{});
 					createCharacter();
 					break;
 				case JOptionPane.NO_OPTION:
-					MainFrame.getSQLHandler().updateQuery("INSERT INTO member VALUES(?, ?, ?, ?, ?)",
-						new String[] {""+memID, notes.getText(), ""+officer, ranks[rank.getSelectedIndex()], ""+guildTax});
+					MainFrame.getSQLHandler().updateQuery("INSERT INTO member VALUES('" + memID + "','" + notes.getText() + "','" +  officer + "','" +  
+							rank.getItemAt(rank.getSelectedIndex()) + "','" + guildTax + "')", new String[]{});
 					break;
 				default:
 					break;
@@ -232,7 +232,7 @@ public class AddMember{
 		gbc_lblRace.gridy = 2;
 		createCharacterPanel.add(lblRace, gbc_lblRace);
 
-		final String[] races = {"Human", "Night Elf", "Worgen", "Gnome", "Dwarf", "Draenai", "Orc", "Troll",
+		String[] races = {"Human", "Night Elf", "Worgen", "Gnome", "Dwarf", "Draenai", "Orc", "Troll",
 				"Tauren", "Undead", "Goblin", "Blood Elf", "Pandaren"};
 		race = new JComboBox<String>(races);
 		GridBagConstraints gbc_race = new GridBagConstraints();
@@ -261,7 +261,7 @@ public class AddMember{
 		createCharacterPanel.add(lblClass, gbc_lblClass);
 
 
-		final String[] typeOfClass = {"Druid", "Death Knight", "Monk", "Shaman", "Rogue", "Mage", "Paladin",
+		String[] typeOfClass = {"Druid", "Death Knight", "Monk", "Shaman", "Rogue", "Mage", "Paladin",
 				"Priest", "Warlock", "Warrior", "Hunter"};
 		classes  = new JComboBox<String>(typeOfClass);
 		GridBagConstraints gbc_classes = new GridBagConstraints();
@@ -292,8 +292,9 @@ public class AddMember{
 				}else if(rdbtnBank.isSelected()){
 					mainAltOrBank = "Bank";
 				}
-				MainFrame.getSQLHandler().updateQuery("INSERT INTO characters VALUES(?, ?, ?, ?, ?, ?)",
-				new String[] {name.getText(), level.getText(), mainAltOrBank, races[race.getSelectedIndex()], ""+memID, typeOfClass[classes.getSelectedIndex()]});
+				MainFrame.getSQLHandler().updateQuery("INSERT INTO characters  VALUES('" + name.getText() + "','" + level.getText() + "','" + mainAltOrBank  + 
+						"','" +  race.getItemAt(race.getSelectedIndex()) + "','" + memID + "','" + classes.getItemAt(classes.getSelectedIndex()) + "')", new String[]{});
+				createCharacter.setVisible(false);
 			}
 		});
 
