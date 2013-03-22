@@ -21,7 +21,7 @@ import javax.swing.JButton;
 
 public class AddProfessionFrame extends JDialog{
 	private JTextField level, notes;
-	private ArrayList<String> chars = null;
+	private ArrayList<String> chars;
 	private JComboBox<String> existingCharacters, profession;
 	
 	@SuppressWarnings("unchecked")
@@ -135,7 +135,7 @@ public class AddProfessionFrame extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(chars.get(existingCharacters.getSelectedIndex()));
 				MainFrame.getSQLHandler().updateQuery("INSERT INTO professions VALUES(?, ?, ?, ?)",
-						new String[] {chars.get(existingCharacters.getSelectedIndex()), professions[profession.getSelectedIndex()],
+						new String[] {professions[profession.getSelectedIndex()], chars.get(existingCharacters.getSelectedIndex()), 
 						level.getText(), notes.getText()});
 				setVisible(false);
 			}
