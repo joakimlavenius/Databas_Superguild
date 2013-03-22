@@ -133,7 +133,6 @@ public class AddProfessionFrame extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(chars.get(existingCharacters.getSelectedIndex()));
 				MainFrame.getSQLHandler().updateQuery("INSERT INTO professions VALUES(?, ?, ?, ?)",
 						new String[] {professions[profession.getSelectedIndex()], chars.get(existingCharacters.getSelectedIndex()), 
 						level.getText(), notes.getText()});
