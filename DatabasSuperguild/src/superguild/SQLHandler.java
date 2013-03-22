@@ -17,6 +17,7 @@ public class SQLHandler {
 	private boolean connected = false;
 	
 	private String host,username,database;
+	public static String lastQuery = null;
 	
 	public SQLHandler(String host, String username, String password, String database) {
 		debugMode = false;
@@ -82,6 +83,7 @@ public class SQLHandler {
 	}
 	
 	public ResultSet selectQuery(String query, String data[]) {
+		lastQuery = query;	
 		ResultSet rs = null;
 		try {
 			PreparedStatement prep = sqlConnection.prepareStatement(query);
@@ -112,6 +114,7 @@ public class SQLHandler {
 	}
 	
 	public ResultSet selectQuery(String query) {
+		lastQuery = query;	
 		ResultSet rs = null;
 		try {
 			PreparedStatement prep = sqlConnection.prepareStatement(query);
@@ -160,8 +163,19 @@ public class SQLHandler {
 		
 		return rs;
 	}
-	
-	
-	
-
+	public ResultSet sortQuery(String query) {
+		ResultSet rs = null;
+		try {
+			PreparedStatement prep = sqlConnection.prepareStatement(query);
+			rs = prep.executeQuery();
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong... See console for output", "Oops!", JOptionPane.ERROR_MESSAGE);
+			System.err.println("SQLHandler: ERROR preparing statement for simple select.");
+			e.printStackTrace();
+		} catch(NullPointerException e2) {
+			JOptionPane.showMessageDialog(null, "I don't think you're connected yet", "Oops!", JOptionPane.ERROR_MESSAGE);
+		}
+		return rs;
+	}
 }

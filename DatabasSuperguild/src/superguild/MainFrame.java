@@ -19,9 +19,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame {
+	
+	ResultSet results = null;
+	ResultSetMetaData meta = null;
+	JMenu mnSort;
+	JMenuItem[] sortItems = new JMenuItem[20];
+	
 	private AddMemberFrame addMember = new AddMemberFrame();
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
@@ -54,7 +62,63 @@ public class MainFrame extends JFrame {
 				System.exit(0);
 			}
 		});
-
+		
+		mnSort = new JMenu("Sort");
+		menuBar.add(mnSort);
+		
+		mnSort.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent arg0) {
+			}
+			public void menuDeselected(MenuEvent arg0) {
+			}
+			public void menuSelected(MenuEvent arg0) {
+					
+					mnSort.removeAll();
+					System.out.println("Trying to add items");
+					String sortNames[];
+					try {
+						sortNames = new String[meta.getColumnCount()];
+						System.out.println("We have " + sortNames.length + " names");
+						
+						//Namnge
+						for(int i=0;i<sortNames.length;++i)
+						{
+							sortNames[i]= meta.getColumnLabel(i+1);
+							System.out.println(sortNames[i]);
+						}
+						//Sätt namnen till menuitems
+						for (int i=0;i<sortNames.length;i++){
+							sortItems[i] = new JMenuItem(sortNames[i]);  							      
+						}
+						//Lägger till dessa
+						for (int i=0;i<sortNames.length;i++){
+							mnSort.add(sortItems[i]);
+						}
+						//Skapar actionlisteners med ett gemensamt kommando
+						for (int i=0;i<sortNames.length;i++){
+							sortItems[i].setActionCommand(sortNames[i].toString());
+							sortItems[i].addActionListener(new ActionListener(){
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									String choice = e.getActionCommand();
+//									String sorterSQL = removeLastChar(sqlHandler.lastQuery);
+									results = sqlHandler.sortQuery(sqlHandler.lastQuery + " ORDER BY " + choice + ";");
+									try {
+										lister(results);
+									} catch (SQLException e1) {
+										System.out.println("Couldn't list! " + e1.getMessage());
+									}
+								}
+							});
+						}
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();					
+				}
+			}
+		});
+		
 		JMenu mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
 
@@ -83,9 +147,9 @@ public class MainFrame extends JFrame {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0 ,0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
 		JButton listMembersButton = new JButton("List All Members");
@@ -99,10 +163,10 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member");
+				results = sqlHandler.selectQuery("SELECT * FROM member");
 				//Populates table, send resultset
 				try {
-					lister(debugresults);
+					lister(results);
 				} catch (SQLException e1) {
 					System.out.println("Error populating table!" + e1.getMessage());
 					e1.printStackTrace();
@@ -126,20 +190,34 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		JButton addCharToExist = new JButton("Add A Character");
+		GridBagConstraints gbc_addchar = new GridBagConstraints();
+		gbc_addchar.fill = GridBagConstraints.BOTH;
+		gbc_addchar.insets = new Insets(0, 0, 5, 5);
+		gbc_addchar.gridx = 0;
+		gbc_addchar.gridy = 3;
+		getContentPane().add(addCharToExist, gbc_addchar);
+		addCharToExist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				SelectCharacterFrame eee = new SelectCharacterFrame();
+				eee.setVisible(true);
+			}
+		});
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
 		scrollPane.setMinimumSize(new Dimension(300, 200));
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 5;
+		gbc_scrollPane.gridheight = 7;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 0;
 		getContentPane().add(scrollPane, gbc_scrollPane);
 
 		table = new JTable();
-		
 		scrollPane.setViewportView(table);
 		
 		JButton addNewMemberButton = new JButton("Add New Member");
@@ -153,11 +231,33 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				AddMember addMember = new AddMember();
 				addMember.addMember();
-				
 			}
 		});
 		
+		JButton showAllChars = new JButton("List All Characters");
+		GridBagConstraints gbc_showAllChars = new GridBagConstraints();
+		gbc_showAllChars.insets = new Insets(0, 0, 5, 5);
+		gbc_showAllChars.gridx = 0;
+		gbc_showAllChars.gridy = 4;
+		getContentPane().add(showAllChars, gbc_showAllChars);
+		showAllChars.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				//Add doing a query here
+				results = sqlHandler.selectQuery("SELECT * FROM characters");
+				//Populates table, send resultset
+				try {
+					lister(results);
+				} catch (SQLException e1) {
+					System.out.println("Error populating table!" + e1.getMessage());
+					e1.printStackTrace();
+				}
+			}
+		});
 		JButton addProfessionButton = new JButton("Add Profession");
 		GridBagConstraints gbc_addProfession = new GridBagConstraints();
 		gbc_addProfession.fill = GridBagConstraints.HORIZONTAL;
@@ -189,25 +289,34 @@ public class MainFrame extends JFrame {
 	private JTable table;
 	public static SQLHandler sqlHandler = new SQLHandler();
 	
+	public String removeLastChar(String s) {
+	    if (s == null || s.length() == 0) {
+	        return s;
+	    }
+	    return s.substring(0, s.length()-1);
+	}
+	
 	//This populates the JTable
 	public void lister (ResultSet result) throws SQLException{
-		//DefaultTableModel
+		
+		//DefaultTableModel = tom modell av en tabell som vi lägger in data i för att sedan applicera på riktiga tabellen
+		DefaultTableModel model = new DefaultTableModel();
 
-		DefaultTableModel model = null;
-
-		ResultSetMetaData meta = result.getMetaData();
-		if (model==null){
-			model= new DefaultTableModel();
-		}
+		//Metadata är metadata: Titlar och skit
+		meta = result.getMetaData();
+		
+		//Ta namnen på kolumner till en array
 		String columns[] = new String[meta.getColumnCount()];
 
+		//Namnge kolumner
 		for(int i=0;i<columns.length;++i)
 		{
 			columns[i]= meta.getColumnLabel(i+1);
 		}
-
+		//Sätt namnen till modellen
 		model.setColumnIdentifiers(columns);
 
+		//Dataobjekt som hämtar data från alla rader utom första, en rad i taget hämtar den all data, tills slut på rader
 		while(result.next())
 		{
 			Object data[]= new Object[columns.length];
@@ -217,6 +326,7 @@ public class MainFrame extends JFrame {
 			}
 			model.addRow(data);
 		}
+		//Applicerar modellen
 		table.setModel(model);
 		//				    used to: return model;
 	}
