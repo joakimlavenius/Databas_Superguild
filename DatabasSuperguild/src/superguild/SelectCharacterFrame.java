@@ -65,7 +65,7 @@ public class SelectCharacterFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				
-				ResultSet charResults = MainFrame.sqlHandler.selectQuery("SELECT memberId FROM member");
+				ResultSet charResults = MainFrame.sqlHandler.selectQuery("SELECT memberId, notes FROM member");
 				
 				try {
 					charBox.removeAllItems();
@@ -73,7 +73,7 @@ public class SelectCharacterFrame extends JFrame{
 
 					while(charResults.next())
 					{
-						charBox.addItem(charResults.getInt(1));
+						charBox.addItem(charResults.getInt(1) + " - " + charResults.getString(2));
 					}
 					
 				} catch (SQLException e) {

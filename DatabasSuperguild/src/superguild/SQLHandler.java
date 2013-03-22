@@ -13,6 +13,7 @@ private MysqlDataSource dataSource;
 private Connection sqlConnection = null;
 private boolean debugMode;
 private boolean connected = false;
+public static String lastQuery = null;
 
 private String host,username,database;
 
@@ -78,6 +79,8 @@ return "";
 }
 
 public ResultSet selectQuery(String query, String data[]) {
+	
+lastQuery = query;	
 ResultSet rs = null;
 try {
 PreparedStatement prep = sqlConnection.prepareStatement(query);
@@ -107,6 +110,7 @@ return rs;
 }
 
 public ResultSet selectQuery(String query) {
+	lastQuery = query;
 ResultSet rs = null;
 try {
 PreparedStatement prep = sqlConnection.prepareStatement(query);
@@ -118,6 +122,20 @@ e.printStackTrace();
 }
 return rs;
 }
+public ResultSet sortQuery(String query) {
+
+ResultSet rs = null;
+try {
+PreparedStatement prep = sqlConnection.prepareStatement(query);
+rs = prep.executeQuery();
+
+} catch (SQLException e) {
+System.err.println("SQLHandler: ERROR preparing statement for simple select.");
+e.printStackTrace();
+}
+return rs;
+}
+
 
 public int updateQuery(String query, String data[]) {
 int rs = 0;

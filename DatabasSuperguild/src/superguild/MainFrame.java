@@ -19,9 +19,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.event.MenuListener;
+import javax.swing.event.MenuEvent;
 
 public class MainFrame extends JFrame {
 	
+	ResultSet results = null;
+	ResultSetMetaData meta = null;
+	JMenu mnSort;
+	JMenuItem[] sortItems = new JMenuItem[20];
 	
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
@@ -54,7 +60,61 @@ public class MainFrame extends JFrame {
 				System.exit(0);
 			}
 		});
-
+		
+		mnSort = new JMenu("Sort");
+		menuBar.add(mnSort);
+		
+		mnSort.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent arg0) {
+			}
+			public void menuDeselected(MenuEvent arg0) {
+			}
+			public void menuSelected(MenuEvent arg0) {
+					
+					mnSort.removeAll();
+					System.out.println("Trying to add items");
+					String sortNames[];
+					try {
+						sortNames = new String[meta.getColumnCount()];
+						System.out.println("We have " + sortNames.length + " names");
+						
+						//Namnge kolumner
+						for(int i=0;i<sortNames.length;++i)
+						{
+							sortNames[i]= meta.getColumnLabel(i+1);
+							System.out.println(sortNames[i]);
+						}
+						//Sätt namnen till modellen
+						for (int i=0;i<sortNames.length;i++){
+							      sortItems[i] = new JMenuItem(sortNames[i]);  							      
+						}
+						for (int i=0;i<sortNames.length;i++){
+							mnSort.add(sortItems[i]);
+						}
+						for (int i=0;i<sortNames.length;i++){
+							sortItems[i].setActionCommand(sortNames[i].toString());
+							sortItems[i].addActionListener(new ActionListener(){
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									String choice = e.getActionCommand();
+//									String sorterSQL = removeLastChar(sqlHandler.lastQuery);
+									results = sqlHandler.sortQuery(sqlHandler.lastQuery + " ORDER BY " + choice + ";");
+									try {
+										lister(results);
+									} catch (SQLException e1) {
+										System.out.println("Couldn't list! " + e1.getMessage());
+									}
+								}
+							});
+						}
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();					
+				}
+			}
+		});
+		
 		JMenu mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
 
@@ -99,10 +159,10 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet debugresults = sqlHandler.selectQuery("SELECT * FROM member");
+				results = sqlHandler.selectQuery("SELECT * FROM member");
 				//Populates table, send resultset
 				try {
-					lister(debugresults);
+					lister(results);
 				} catch (SQLException e1) {
 					System.out.println("Error populating table!" + e1.getMessage());
 					e1.printStackTrace();
@@ -184,10 +244,10 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				//Add doing a query here
-				ResultSet charresults = sqlHandler.selectQuery("SELECT * FROM characters");
+				results = sqlHandler.selectQuery("SELECT * FROM characters");
 				//Populates table, send resultset
 				try {
-					lister(charresults);
+					lister(results);
 				} catch (SQLException e1) {
 					System.out.println("Error populating table!" + e1.getMessage());
 					e1.printStackTrace();
@@ -208,6 +268,13 @@ public class MainFrame extends JFrame {
 	private JTable table;
 	public static SQLHandler sqlHandler = new SQLHandler();
 	
+	public String removeLastChar(String s) {
+	    if (s == null || s.length() == 0) {
+	        return s;
+	    }
+	    return s.substring(0, s.length()-1);
+	}
+	
 	//This populates the JTable
 	public void lister (ResultSet result) throws SQLException{
 		
@@ -215,7 +282,7 @@ public class MainFrame extends JFrame {
 		DefaultTableModel model = new DefaultTableModel();
 
 		//Metadata är metadata: Titlar och skit
-		ResultSetMetaData meta = result.getMetaData();
+		meta = result.getMetaData();
 		
 		//Ta namnen på kolumner till en array
 		String columns[] = new String[meta.getColumnCount()];
