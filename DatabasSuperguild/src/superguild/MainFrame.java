@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MainFrame extends JFrame {
+	private AddMember addMember = new AddMember();
 	public MainFrame(){
 		getContentPane().setMaximumSize(new Dimension(100, 2147483647));
 		getContentPane().setMinimumSize(new Dimension(100, 0));
@@ -84,15 +85,15 @@ public class MainFrame extends JFrame {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
 		JButton listMembersButton = new JButton("List All Members");
 		GridBagConstraints gbc_listMembersButton = new GridBagConstraints();
 		gbc_listMembersButton.fill = GridBagConstraints.BOTH;
-		gbc_listMembersButton.insets = new Insets(0, 0, 0, 0);
+		gbc_listMembersButton.insets = new Insets(0, 0, 5, 5);
 		gbc_listMembersButton.gridx = 0;
 		gbc_listMembersButton.gridy = 0;
 		getContentPane().add(listMembersButton, gbc_listMembersButton);
@@ -115,7 +116,7 @@ public class MainFrame extends JFrame {
 		JButton selectAMemberButton = new JButton("Select A Member");
 		GridBagConstraints gbc_selectAMemberButton = new GridBagConstraints();
 		gbc_selectAMemberButton.fill = GridBagConstraints.BOTH;
-		gbc_selectAMemberButton.insets = new Insets(0, 0, 0, 0);
+		gbc_selectAMemberButton.insets = new Insets(0, 0, 5, 5);
 		gbc_selectAMemberButton.gridx = 0;
 		gbc_selectAMemberButton.gridy = 1;
 		getContentPane().add(selectAMemberButton, gbc_selectAMemberButton);
@@ -133,7 +134,7 @@ public class MainFrame extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 3;
+		gbc_scrollPane.gridheight = 4;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 0;
@@ -142,6 +143,22 @@ public class MainFrame extends JFrame {
 		table = new JTable();
 		
 		scrollPane.setViewportView(table);
+		
+		JButton addNewMemberButton = new JButton("Add New Member");
+		GridBagConstraints gbc_AddNewMemberButton = new GridBagConstraints();
+		gbc_AddNewMemberButton.fill = GridBagConstraints.BOTH;
+		gbc_AddNewMemberButton.insets = new Insets(0, 0, 5, 5);
+		gbc_AddNewMemberButton.gridx = 0;
+		gbc_AddNewMemberButton.gridy = 2;
+		getContentPane().add(addNewMemberButton, gbc_AddNewMemberButton);
+		addNewMemberButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addMember.addMember();
+				
+			}
+		});
 
 		
 
