@@ -76,9 +76,10 @@ public class SelectCharacterFrame extends JFrame{
 						charBox.addItem(charResults.getInt(1) + " - " + charResults.getString(2));
 					}
 					
-				} catch (SQLException e) {
+				} catch (SQLException | NullPointerException e) {
 					System.out.println("Failed adding entries");
 					e.printStackTrace();
+					setVisible(false);
 				}
 
 					}

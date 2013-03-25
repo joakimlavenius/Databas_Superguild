@@ -64,7 +64,7 @@ public class SQLHandler {
 			if(debugMode) System.out.println("SQLHandler connected.");
 			connected = true;
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Can't connect to the database. Wrong credentials.", "Oops!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Can't connect to the database. Wrong credentials?", "Oops!", JOptionPane.ERROR_MESSAGE);
 			System.err.println("SQLHandler: Can't connect to database, using "+username+"@"+host);
 			e.printStackTrace();
 			return;
