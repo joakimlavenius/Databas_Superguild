@@ -1,6 +1,5 @@
 package superguild;
 import javax.swing.JDialog;
-import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -19,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 
+@SuppressWarnings("serial")
 public class AddProfessionFrame extends JDialog{
 	private JTextField level, notes;
 	private ArrayList<String> chars;
@@ -56,8 +56,7 @@ public class AddProfessionFrame extends JDialog{
 				chars.add(resSet.getString(noc));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Failed to add entries " + e.getMessage());
 		}
 		
 		existingCharacters = new JComboBox(chars.toArray());
@@ -129,6 +128,8 @@ public class AddProfessionFrame extends JDialog{
 		gbc_btnAddProfession.gridx = 0;
 		gbc_btnAddProfession.gridy = 4;
 		panel.add(btnAddProfession, gbc_btnAddProfession);
+		
+		
 		btnAddProfession.addActionListener(new ActionListener() {
 			
 			@Override

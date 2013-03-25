@@ -27,10 +27,6 @@ public class AddCharacterFrame extends JDialog{
 		this.memID = memID;
 	}
 	
-	public AddCharacterFrame(){
-		
-	}
-	
 	public void createCharacter(){
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 
@@ -71,7 +67,7 @@ public class AddCharacterFrame extends JDialog{
 		gbc_lblLevel.gridy = 1;
 		createCharacterPanel.add(lblLevel, gbc_lblLevel);
 
-		level = new JTextField();
+		level = new JTextField("1");
 		GridBagConstraints gbc_level = new GridBagConstraints();
 		gbc_level.insets = new Insets(0, 0, 5, 5);
 		gbc_level.fill = GridBagConstraints.HORIZONTAL;

@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-
 public class AddMemberFrame extends JDialog{
 	private JTextField notes;
 	private JDialog addMember;

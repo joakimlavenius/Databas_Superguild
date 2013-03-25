@@ -83,7 +83,8 @@ public class SQLHandler {
 	}
 	
 	public ResultSet selectQuery(String query, String data[]) {
-		lastQuery = query;	
+		lastQuery = query;
+		
 		ResultSet rs = null;
 		try {
 			PreparedStatement prep = sqlConnection.prepareStatement(query);
@@ -103,6 +104,7 @@ public class SQLHandler {
 					prep.setString(i, data[(i-1)]);
 				}
 			}
+			
 			rs = prep.executeQuery();
 			
 		} catch (SQLException e) {
@@ -114,7 +116,7 @@ public class SQLHandler {
 	}
 	
 	public ResultSet selectQuery(String query) {
-		lastQuery = query;	
+		lastQuery = query;
 		ResultSet rs = null;
 		try {
 			PreparedStatement prep = sqlConnection.prepareStatement(query);
