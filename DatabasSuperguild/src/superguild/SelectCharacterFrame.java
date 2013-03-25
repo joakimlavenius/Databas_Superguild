@@ -75,7 +75,7 @@ public class SelectCharacterFrame extends JFrame{
 					{
 						charBox.addItem(charResults.getInt(1) + " - " + charResults.getString(2));
 					}
-					
+
 					break;
 					case 2: charResults = MainFrame.sqlHandler.selectQuery("SELECT name FROM characters");
 					
@@ -86,13 +86,11 @@ public class SelectCharacterFrame extends JFrame{
 					break;
 					}
 					
-					
+				} catch (SQLException | NullPointerException e) {
 
-					
-					
-				} catch (SQLException e) {
 					System.out.println("Failed adding entries");
 					e.printStackTrace();
+					setVisible(false);
 				}
 
 					}
